@@ -1,2 +1,2 @@
 # minly-media-website
-Social media for uploading media content, viewing lists, and liking/unliking media content.
+Social media website for uploading media content, viewing lists, and liking/unliking media content.
