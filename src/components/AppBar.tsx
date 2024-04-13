@@ -35,7 +35,11 @@ export function AppBar() {
   const dispatch = useAppDispatch();
 
   // handle logout
-  const handleLogout = () => dispatch(logout());
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    dispatch(logout());
+  };
 
   return (
     <header className="sticky top-0 left-0 right-0 z-20 flex items-center w-full h-16 gap-4 overflow-x-hidden border-b bg-background md:px-6">
