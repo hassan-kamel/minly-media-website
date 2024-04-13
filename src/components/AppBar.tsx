@@ -6,6 +6,8 @@ import {
   Settings,
   User,
   Tv,
+  Heart,
+  Home,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -36,7 +38,7 @@ export function AppBar() {
   const handleLogout = () => dispatch(logout());
 
   return (
-    <header className="sticky top-0 flex items-center h-16 gap-4 px-4 border-b bg-background md:px-6">
+    <header className="sticky top-0 left-0 right-0 z-20 flex items-center w-full h-16 gap-4 overflow-x-hidden border-b bg-background md:px-6">
       <nav className="flex-col hidden gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <NavLink
           to={"/"}
@@ -47,15 +49,17 @@ export function AppBar() {
         </NavLink>
         <NavLink
           to={"/"}
-          className="transition-colors text-foreground hover:text-foreground"
+          className="flex items-center gap-2 transition-colors text-foreground hover:text-foreground justify-content-center"
         >
-          Dashboard
+          <Home />
+          <span>Home</span>
         </NavLink>
         <NavLink
           to={"/"}
-          className="transition-colors text-muted-foreground hover:text-foreground"
+          className="flex items-center gap-2 transition-colors text-muted-foreground hover:text-foreground justify-content-center"
         >
-          Orders
+          <Heart />
+          <span>Likes</span>
         </NavLink>
       </nav>
       <Sheet>
@@ -74,14 +78,19 @@ export function AppBar() {
               <Tv className="w-6 h-6" />
               <span className="sr-only">Acme Inc</span>
             </NavLink>
-            <NavLink to={"/"} className="hover:text-foreground">
-              Dashboard
+            <NavLink
+              to={"/"}
+              className="flex items-center gap-2 hover:text-foreground justify-content-center"
+            >
+              <Home />
+              <span>Home</span>
             </NavLink>
             <NavLink
               to={"/"}
-              className="text-muted-foreground hover:text-foreground"
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground justify-content-center"
             >
-              Orders
+              <Heart />
+              <span>Likes</span>
             </NavLink>
           </nav>
         </SheetContent>
@@ -89,7 +98,7 @@ export function AppBar() {
       <div className="flex items-center w-full gap-4 md:ml-auto md:gap-2 lg:gap-4">
         <form className="flex-1 ml-auto sm:flex-initial">
           <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-2.5 top-2.5 h-4 md:w-4 text-muted-foreground" />
             <Input
               type="search"
               placeholder="Search ..."
@@ -97,6 +106,7 @@ export function AppBar() {
             />
           </div>
         </form>
+
         {user && token ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

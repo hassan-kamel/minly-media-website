@@ -24,18 +24,15 @@ function App() {
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedUser = JSON.parse(localStorage.getItem("user") as string);
-    if (storedToken && storedUser && user && token) {
+    if (storedToken && storedUser) {
       dispatch(setUserAndToken({ user: storedUser, token: storedToken }));
     }
-  }, [user, token, dispatch]);
+  }, [dispatch]);
 
   //  change localStorage if user logged in or out based on user selector
   useEffect(() => {
     if (user) localStorage.setItem("user", JSON.stringify(user));
-    else localStorage.removeItem("user");
-
     if (token) localStorage.setItem("token", token);
-    else localStorage.removeItem("token");
   }, [user, token]);
 
   return (
@@ -54,12 +51,14 @@ function App() {
           <Outlet></Outlet>
         </>
       ) : (
-        <div className="container">
-          <div className="flex flex-col w-full min-h-screen">
-            <AppBar />
-            <Outlet></Outlet>
+        <>
+          <div className="max-w-[95%] mx-auto md:container">
+            <div className="flex flex-col w-full ">
+              <AppBar />
+              <Outlet></Outlet>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </>
   );

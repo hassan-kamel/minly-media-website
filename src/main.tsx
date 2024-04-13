@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { store } from "./store/appStore.ts";
@@ -10,6 +9,7 @@ import LoginPage from "./pages/LoginPage.tsx";
 import ErrorPage from "./components/ErrorPage.tsx";
 import SignUpPage from "./pages/SignupPage.tsx";
 import GuestRoute from "./components/GuestRoute.tsx";
+import Home from "./pages/Home.tsx";
 
 const router = createBrowserRouter([
   {
@@ -18,10 +18,10 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "home",
+        path: "",
         index: true,
         errorElement: <ErrorPage />,
-        // element: <LoginPage />,
+        element: <Home />,
       },
       {
         path: "login",
@@ -46,9 +46,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
 );

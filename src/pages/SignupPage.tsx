@@ -21,8 +21,12 @@ import { z } from "zod";
 
 const SignupSchema = z
   .object({
-    firstName: z.string({ required_error: "Enter your first name" }),
-    lastName: z.string({ required_error: "Enter your last name" }),
+    firstName: z.string({ required_error: "Enter your first name" }).min(3, {
+      message: "First name must be at least 3 characters",
+    }),
+    lastName: z.string({ required_error: "Enter your last name" }).min(3, {
+      message: "Last name must be at least 3 characters",
+    }),
     email: z.string({ required_error: "Enter your email" }).email({
       message: "Enter a valid email",
     }),

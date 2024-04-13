@@ -54,8 +54,13 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground mx-auto;
   }
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  overflow-x: hidden;
 }
 
 /* "linear-gradient(10.15deg, rgb(255, 44, 0) -6.51%, rgb(144, 0, 195) 120.19%);" */
