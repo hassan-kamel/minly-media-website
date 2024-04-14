@@ -1,7 +1,7 @@
 import { TPostPayload } from "@/interfaces/post/post-list-payload";
 import { MinlyMediaAPI } from "./MinlyMediaAPI";
 import { TCreatePostPayload } from "@/interfaces/post/create-post-payload";
-import { TLikeUnlikePostPayload } from "@/interfaces/post/like-unlike-payload";
+import { TPostIdPayload } from "@/interfaces/post/post-id-payload";
 
 // Function to handle errors
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,7 +54,10 @@ export const createPost = async (
 //     .catch(handleError);
 // };
 
-export const deletePost = (postId: string, token: string) => {
+export const deletePost = async ({
+  postId,
+  token,
+}: TPostIdPayload & { token: string }) => {
   return MinlyMediaAPI.delete(`/post/${postId}`, {
     headers: { Authorization: `Bearer ${token}` },
   })
@@ -65,7 +68,7 @@ export const deletePost = (postId: string, token: string) => {
 export const likePost = async ({
   postId,
   token,
-}: TLikeUnlikePostPayload & { token: string }) => {
+}: TPostIdPayload & { token: string }) => {
   return MinlyMediaAPI.post(
     `/post/like/${postId}`,
     {},
@@ -80,7 +83,7 @@ export const likePost = async ({
 export const dislikePost = async ({
   postId,
   token,
-}: TLikeUnlikePostPayload & { token: string }) => {
+}: TPostIdPayload & { token: string }) => {
   return MinlyMediaAPI.post(
     `/post/dislike/${postId}`,
     {},

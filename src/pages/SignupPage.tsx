@@ -86,13 +86,36 @@ function SignUpPage() {
   }, [loading]);
 
   // listeners for state error
+  // error message
   useEffect(() => {
+    toast.dismiss("signup-error");
     if (error) {
-      toast.error(
-        (error as { message: string }).message || "Uh oh! Something went wrong"
-      );
+      const myError = error as {
+        message: string;
+        error: {
+          status: string;
+          message: string;
+          error: Array<{ message: string }>;
+        };
+      };
+      if (myError.error.error instanceof Array) {
+        myError.error.error.forEach((item: { message: string }) => {
+          toast.error(item.message, {
+            id: "signup-error",
+          });
+        });
+      } else {
+        toast.error(
+          myError?.error.message ||
+            myError?.message ||
+            myError?.error.status ||
+            "Something went wrong",
+          {
+            id: "signup-error",
+          }
+        );
+      }
     }
-    return () => {};
   }, [error]);
 
   // listeners for state

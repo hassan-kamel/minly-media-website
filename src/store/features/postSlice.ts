@@ -1,5 +1,6 @@
 import {
   createPost,
+  deletePost,
   dislikePost,
   getPaginatedPosts,
   likePost,
@@ -16,6 +17,8 @@ export type Post = {
   endOfScrolling: boolean | null;
   creatingPostFlag: TStatusFlag | null;
   likePostFlag: TStatusFlag | null;
+  deletePostFlag: TStatusFlag | null;
+  tempPost: { post?: TPost; index?: number } | null;
   loading: boolean | null;
   error: unknown | string | null;
 };
@@ -25,6 +28,8 @@ const initialState: Post = {
   creatingPostFlag: null,
   likePostFlag: null,
   endOfScrolling: null,
+  deletePostFlag: null,
+  tempPost: null,
   loading: null,
   error: null,
 };
@@ -40,6 +45,7 @@ export const dislikePostThunk = createAsyncThunk(
   "posts/dislikePost",
   dislikePost
 );
+export const deletePostThunk = createAsyncThunk("posts/deletePost", deletePost);
 
 // Slice
 export const postSlice = createSlice({
@@ -59,7 +65,7 @@ export const postSlice = createSlice({
           state.error = action.payload.data;
         }
         if (action.payload.data) {
-          if (state.posts?.total) {
+          if (state.posts?.total && +action.meta.arg.pageNumber > 1) {
             console.log("state.posts: ", state.posts);
             state.posts = {
               total: action.payload.total,
@@ -263,6 +269,61 @@ export const postSlice = createSlice({
                   : post
               ),
             ],
+          };
+        }
+      })
+
+      //  delete Post reducers
+      .addCase(deletePostThunk.pending, (state, action) => {
+        console.log("action: ", action);
+        state.deletePostFlag = "Loading";
+        // optimistic update
+        if (state.posts) {
+          const postId = action.meta.arg.postId;
+          state.tempPost = {
+            post: state.posts.data.find((post) => post.id === postId),
+            index: state.posts.data.findIndex((post) => post.id === postId),
+          };
+          state.posts = {
+            ...state.posts,
+            data: [...state.posts.data.filter((post) => post.id !== postId)],
+          };
+        }
+      })
+      .addCase(deletePostThunk.fulfilled, (state, action) => {
+        console.log("action: ", action);
+        if (action.payload?.data?.error) {
+          state.deletePostFlag = "Error";
+          state.error = action.payload.data;
+          // Roll Back
+          if (state.posts && state.tempPost) {
+            console.log("state.tempPost: ", { ...state.tempPost.post });
+            const revalidatedPosts = state.posts.data;
+            revalidatedPosts.splice(state.tempPost.index!, 0, {
+              ...state.tempPost.post!,
+            });
+            state.posts = {
+              ...state.posts,
+              data: revalidatedPosts,
+            };
+          }
+        } else {
+          state.deletePostFlag = "Success";
+        }
+      })
+
+      .addCase(deletePostThunk.rejected, (state, action) => {
+        state.deletePostFlag = "Error";
+        state.error = action.error;
+        // Roll Back
+        if (state.posts && state.tempPost) {
+          state.posts = {
+            ...state.posts,
+            data: [...state.posts.data].splice(
+              state.tempPost.index!,
+              0,
+              state.tempPost.post!
+            ),
           };
         }
       });

@@ -18,7 +18,11 @@ import {
 import { useAppDispatch, useAppSelector } from "@/hooks/AppStoreHooks";
 import { RootState } from "@/store/appStore";
 import { IUser } from "@/interfaces/user/user";
-import { dislikePostThunk, likePostThunk } from "@/store/features/postSlice";
+import {
+  deletePostThunk,
+  dislikePostThunk,
+  likePostThunk,
+} from "@/store/features/postSlice";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import {
@@ -54,7 +58,9 @@ const Post = ({
   const dispatch = useAppDispatch();
 
   // post
-  const { likePostFlag } = useAppSelector((state: RootState) => state.post);
+  const { likePostFlag, error } = useAppSelector(
+    (state: RootState) => state.post
+  );
 
   // check if the user liked the post
   const isLikedIt = () => {
@@ -70,6 +76,13 @@ const Post = ({
     }
   };
 
+  //  handle delete post
+  const handleDelete = () => {
+    if (token && isMyPost()) {
+      dispatch(deletePostThunk({ postId, token }));
+    }
+  };
+
   // effect fot taost if  like request failed
 
   useEffect(() => {
@@ -81,13 +94,30 @@ const Post = ({
     }
   }, [likePostFlag]);
 
+  // error message
+  useEffect(() => {
+    if (error) {
+      const myError = error as {
+        message: string;
+        error: { status: string };
+      };
+      toast.dismiss("post-error");
+      toast.error(
+        myError?.message || myError?.error.status || "Something went wrong",
+        {
+          id: "post-error",
+        }
+      );
+    }
+  }, [error]);
+
   // check if my post
   const isMyPost = () => {
     return author.id === user?.id;
   };
 
   return (
-    <Card className="mx-auto md:max-w-[700px] my-5 group max-h-[500px] ">
+    <Card className="mx-auto w-full md:max-w-[700px] my-5 group h-auto ">
       <CardHeader className=" z-1 transition-duration-3000">
         <CardTitle>
           <div className="flex items-center gap-4 mb-3">
@@ -119,7 +149,10 @@ const Post = ({
                         <Edit2Icon className="w-4 h-4 mr-2" />
                         <span>Edit</span>
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer">
+                      <DropdownMenuItem
+                        className="cursor-pointer"
+                        onClick={handleDelete}
+                      >
                         <Trash className="w-4 h-4 mr-2" />
                         <span>Delete</span>
                       </DropdownMenuItem>
@@ -131,7 +164,7 @@ const Post = ({
           </div>
         </CardTitle>
         <CardDescription className="mt-52">
-          <span className="mt-5 text-sm">{caption}</span>
+          <span className="mt-5 text-sm">{caption.slice(0, 100) + "..."}</span>
         </CardDescription>
       </CardHeader>
       <CardContent className="grid items-center md:w-[700px] h-64 p-0  shadow-lg rounded-lg overflow-hidden bg-primary ">

@@ -71,6 +71,7 @@ const CreatePostModal = () => {
         id: "creating-post",
       });
     } else if (creatingPostFlag === "Success") {
+      toast.dismiss("creating-post");
       toast.success("Post created successfully", {
         id: "post-Created",
       });
@@ -109,7 +110,7 @@ const CreatePostModal = () => {
 
   return (
     <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-      <DrawerTrigger className="fixed grid w-20 h-20  rounded-full shadow-lg bottom-2 right-2 md:bottom-10 md:right-10 place-items-center bg-gradient-to-r from-minlyFirst to-minlySecond">
+      <DrawerTrigger className="z-[9999] fixed grid w-20 h-20 rounded-full shadow-lg bottom-2 right-2 md:bottom-10 md:right-10 place-items-center bg-gradient-to-r from-minlyFirst to-minlySecond">
         <Upload color="white" size={32} />
       </DrawerTrigger>
       <DrawerContent className="h-[70vh] max-w-[600px] container mb-2">

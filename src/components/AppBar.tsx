@@ -1,14 +1,4 @@
-import {
-  CircleUser,
-  LogOut,
-  Menu,
-  Search,
-  Settings,
-  User,
-  Tv,
-  Heart,
-  Home,
-} from "lucide-react";
+import { LogOut, Menu, Settings, User, Tv, Heart, Home } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,12 +10,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Link, NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks/AppStoreHooks";
 import { RootState } from "@/store/appStore";
 import { logout } from "@/store/features/authenticationSlice";
+import { Avatar, AvatarFallback } from "./ui/avatar";
 
 export function AppBar() {
   // user
@@ -42,7 +32,7 @@ export function AppBar() {
   };
 
   return (
-    <header className="sticky top-0 left-0 right-0 z-20 flex items-center w-full h-16 gap-4 overflow-x-hidden border-b bg-background md:px-6">
+    <header className="z-20 flex items-center w-full h-16 gap-4 overflow-x-hidden border-b bg-background md:px-6">
       <nav className="flex-col hidden gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <NavLink
           to={"/"}
@@ -73,7 +63,7 @@ export function AppBar() {
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left">
+        <SheetContent side="left" className="w-[50vw]">
           <nav className="grid gap-6 text-lg font-medium">
             <NavLink
               to={"/"}
@@ -99,8 +89,8 @@ export function AppBar() {
           </nav>
         </SheetContent>
       </Sheet>
-      <div className="flex items-center w-full gap-4 md:ml-auto md:gap-2 lg:gap-4">
-        <form className="flex-1 ml-auto sm:flex-initial">
+      <div className="flex items-center justify-end w-full gap-4 justify-self-end md:ml-auto md:gap-2 lg:gap-4">
+        {/* <form className="flex-1 ml-auto sm:flex-initial">
           <div className="relative">
             <Search className="absolute left-2.5 top-2.5 h-4 md:w-4 text-muted-foreground" />
             <Input
@@ -109,12 +99,19 @@ export function AppBar() {
               className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
             />
           </div>
-        </form>
+        </form> */}
 
         {user && token ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <CircleUser className="cursor-pointer" />
+              <Avatar className="flex items-center justify-center text-white bg-black rounded-full h-9 w-9 sm:flex">
+                <AvatarFallback
+                  className="uppercase bg-black"
+                  style={{ letterSpacing: "1px" }}
+                >
+                  {user?.fullName?.slice(0, 2)}
+                </AvatarFallback>
+              </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56 transform translate-y-[15px]">
               <DropdownMenuLabel className="capitalize">

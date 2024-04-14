@@ -37,24 +37,30 @@ const Home = () => {
 
   return (
     <>
-      <CreatePostModal />
-      {!posts
-        ? new Array(5).fill(0).map((_, index) => <SkeletonCard key={index} />)
-        : posts.data.map((item) => {
-            return (
-              <Post
-                key={item.id}
-                postId={item.id}
-                type={item.type}
-                caption={item.caption}
-                author={item.author}
-                mediaUrl={item.mediaUrl}
-                likedBy={item.likedBy}
-                createdAt={item.createdAt}
-              />
-            );
-          })}
-      {!endOfScrolling && <SkeletonCard ref={skeletonRef} />}
+      <div className="mb-28">
+        <CreatePostModal />
+        {!posts
+          ? new Array(5).fill(0).map((_, index) => <SkeletonCard key={index} />)
+          : posts.data.map((item) => {
+              return (
+                <Post
+                  key={item.id}
+                  postId={item.id}
+                  type={item.type}
+                  caption={item.caption}
+                  author={item.author}
+                  mediaUrl={item.mediaUrl}
+                  likedBy={item.likedBy}
+                  createdAt={item.createdAt}
+                />
+              );
+            })}
+        {!endOfScrolling ? (
+          <SkeletonCard ref={skeletonRef} />
+        ) : (
+          <div className="text-center ">No More</div>
+        )}
+      </div>
     </>
   );
 };

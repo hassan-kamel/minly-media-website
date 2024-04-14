@@ -68,6 +68,8 @@ export const authenticationSlice = createSlice({
         state.loading = true;
       })
       .addCase(signupAsyncThunk.fulfilled, (state, action) => {
+        console.log("action: ", action);
+
         if (action.payload.data.error) {
           state.error = action.payload.data;
         }
