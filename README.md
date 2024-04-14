@@ -7,7 +7,7 @@ Social media website for uploading media content, viewing lists, and liking/unli
 - [Features](#Features)
 - [Project Eco System](#Project-Eco-System)
 - [Installation](#Installation)
-- [more](#more)
+- [more](#💥-more)
 
 ## 🧐 Features
 
