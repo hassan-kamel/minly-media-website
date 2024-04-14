@@ -2,13 +2,6 @@
 
 Social media website for uploading media content, viewing lists, and liking/unliking media content.
 
-## Table Of Content
-
-- [Features](#Features)
-- [Project Eco System](#Project-Eco-System)
-- [Installation](#Installation)
-- [more](#💥-more)
-
 ## 🧐 Features
 
 | Feat                   | Authenticated User | Guest |
